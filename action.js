@@ -4,7 +4,7 @@ const dayjs = require('dayjs')
 const config = require('config')
 
 
-const cache_memory = new cache( config.get('TTL'), "data.json" )
+const cache_memory = new cache( config.get('TTL') )
 
 let notificationStore = null, messageStore = null;
 let serverRunning = true;
