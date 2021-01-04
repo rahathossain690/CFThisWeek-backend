@@ -1,0 +1,21 @@
+###
+GET http://localhost:3000/
+
+###
+GET http://localhost:3000/contest
+
+###
+GET http://localhost:3000/notification?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
+
+### 
+GET http://localhost:3000/message?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
+
+
+### 
+POST http://localhost:3000/message?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
+
+### 
+POST http://localhost:3000/notification?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
+
+### 
+POST http://localhost:3000/server-state?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
