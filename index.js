@@ -3,6 +3,16 @@ const config = require('config')
 
 const app = express()
 
+const rateLimit = require("express-rate-limit");
+ 
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 30 minutes
+  max: 10 // limit each IP to 10 requests per windowMs
+});
+
+app.use(limiter);
+
+
 app.get('/', (req, res) => {
     res.send('Your server is working')
 })
