@@ -6,11 +6,11 @@ const app = express()
 const rateLimit = require("express-rate-limit");
  
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 30 minutes
-  max: 10 // limit each IP to 10 requests per windowMs
+  windowMs: 30 * 60 * 1000, // 30 minutes
+  max: 100 // limit each IP to 3 requests per windowMs
 });
 
-app.use(limiter);
+// app.use(limiter);
 
 
 app.get('/', (req, res) => {
@@ -27,6 +27,8 @@ app.post('/message', action.admin_only, action.set_message)
 app.get('/notification', action.admin_only, action.get_notification)
 app.get('/message', action.admin_only, action.get_message)
 app.post('/server-state', action.admin_only, action.server_state)
+
+app.get('/dummy', action.dummy)
 
 
 app.listen(process.env.PORT || config.get('PORT'), () => {

@@ -4,7 +4,7 @@ const dayjs = require('dayjs')
 const config = require('config')
 
 
-const cache_memory = new cache( config.get('TTL') )
+const cache_memory = new cache( config.get('TTL'), 'data.json')
 
 let notificationStore = null, messageStore = null;
 let serverRunning = true;
@@ -15,11 +15,7 @@ const rewrite_data = (data) => {
     data.objects.forEach(element => {
         delete element.resource 
         delete element.id
-        element.div = null
-        const div_string = element.event.match(/Div. \d/g)[0]
-        if(div_string.length){
-            element.div = parseInt(div_string.substring(5, div_string.length))
-        }
+        element.div = element.event.match(/Div. \d/g)[0]
     });
 
     delete data.meta.previous
@@ -36,6 +32,8 @@ const rewrite_data = (data) => {
     if(messageStore){
         data.message = messageStore
     }
+    
+    return data;
 }
 
 
@@ -52,10 +50,10 @@ module.exports.contest = async (req, res) => {
             const response = await axios.get(url)
             contest_data = rewrite_data(response.data)
             await cache_memory.put('CONTEST_DATA', contest_data)
-        }
+        } console.log(contest_data)
         res.send(contest_data)
 
-    } catch(err){
+    } catch(err){ console.log(err)
         res.status(401).send({
             failed: true,
             error: err.message,
@@ -133,5 +131,45 @@ module.exports.server_state = (req, res) => {
     serverRunning = server_to_set
     res.send({
         server_state: serverRunning
+    })
+}
+
+// 0:
+// div: "Div. 2"
+// duration: 7200
+// end: "2021-01-14T16:35:00"
+// event: "Educational Codeforces Round 102 (Rated for Div. 2)"
+// href: "http://codeforces.com/contests/1473"
+// start: "2021-01-14T14:35:00"
+
+
+module.exports.dummy = async (req, res) => {
+    res.json({
+        contests: [
+            {
+                div: ["Div. 2"],
+                duration: 7200,
+                end: dayjs().add(30 + 7200, 'm').toISOString(),
+                event: "Educational Codeforces Round 102 (Rated for Div. 2)",
+                href: "http://codeforces.com/contests/1473",
+                start: dayjs().add(30, 'm').toISOString(),
+            },
+            {
+                div: ["Div. 1"],
+                duration: 7200,
+                end: dayjs().add(60 + 7200, 'm').toISOString(),
+                event: "Educational Codeforces Round 102 (Rated for Div. 1)",
+                href: "http://codeforces.com/contests/1473",
+                start: dayjs().add(60, 'm').toISOString(),
+            },
+            {
+                div: ["Div. 3"],
+                duration: 7200,
+                end: dayjs().add(120 + 7200, 'm').toISOString(),
+                event: "Educational Codeforces Round 102 (Rated for Div. 3)",
+                href: "http://codeforces.com/contests/1473",
+                start: dayjs().add(120, 'm').toISOString(),
+            },
+        ]
     })
 }
