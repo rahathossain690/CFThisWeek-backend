@@ -15,7 +15,7 @@ const rewrite_data = (data) => {
     data.objects.forEach(element => {
         delete element.resource 
         delete element.id
-        element.div = element.event.match(/Div. \d/g)[0]
+        element.div = element.event.match(/Div. \d/g)
     });
 
     delete data.meta.previous
@@ -50,10 +50,10 @@ module.exports.contest = async (req, res) => {
             const response = await axios.get(url)
             contest_data = rewrite_data(response.data)
             await cache_memory.put('CONTEST_DATA', contest_data)
-        } console.log(contest_data)
+        }
         res.send(contest_data)
 
-    } catch(err){ console.log(err)
+    } catch(err){
         res.status(401).send({
             failed: true,
             error: err.message,

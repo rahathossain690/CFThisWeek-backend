@@ -19,3 +19,7 @@ POST http://localhost:3000/notification?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
 
 ### 
 POST http://localhost:3000/server-state?admin=SUCKMADICKYOFUCKINGCOCKSUCKA
+
+
+###
+GET http://localhost:3000/dummy
