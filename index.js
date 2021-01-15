@@ -10,7 +10,7 @@ const limiter = rateLimit({
   max: 3 // limit each IP to 3 requests per windowMs
 });
 
-// app.use(limiter);
+app.use(limiter);
 
 
 app.get('/', (req, res) => {
