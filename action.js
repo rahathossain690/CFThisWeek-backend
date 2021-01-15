@@ -3,6 +3,9 @@ const cache = require('cache')
 const dayjs = require('dayjs')
 const config = require('config')
 
+var utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
+
 
 const cache_memory = new cache( config.get('TTL'))
 
@@ -16,6 +19,8 @@ const rewrite_data = (data) => {
         delete element.resource 
         delete element.id
         element.div = element.event.match(/Div. \d/g)
+	    element.start = dayjs(element.start).utc().format()
+        element.end = dayjs(element.end).utc().format()
     });
 
     delete data.meta.previous
@@ -142,33 +147,32 @@ module.exports.server_state = (req, res) => {
 // href: "http://codeforces.com/contests/1473"
 // start: "2021-01-14T14:35:00"
 
-
 module.exports.dummy = async (req, res) => {
     res.json({
         contests: [
             {
                 div: ["Div. 2"],
                 duration: 7200,
-                end: dayjs().add(30 + 7200, 'm').toISOString(),
+                end: dayjs().add(30 + 7200, 'm').utc().format(),
                 event: "Educational Codeforces Round 102 (Rated for Div. 2)",
                 href: "http://codeforces.com/contests/1473",
-                start: dayjs().add(30, 'm').toISOString(),
+                start: dayjs().add(30, 'm').utc().format(),
             },
             {
                 div: ["Div. 1"],
                 duration: 7200,
-                end: dayjs().add(60 + 7200, 'm').toISOString(),
+                end: dayjs().add(60 + 7200, 'm').utc().format(),
                 event: "Educational Codeforces Round 102 (Rated for Div. 1)",
                 href: "http://codeforces.com/contests/1473",
-                start: dayjs().add(60, 'm').toISOString(),
+                start: dayjs().add(60, 'm').utc().format(),
             },
             {
                 div: ["Div. 3"],
                 duration: 7200,
-                end: dayjs().add(120 + 7200, 'm').toISOString(),
+                end: dayjs().add(120 + 7200, 'm').utc().format(),
                 event: "Educational Codeforces Round 102 (Rated for Div. 3)",
                 href: "http://codeforces.com/contests/1473",
-                start: dayjs().add(120, 'm').toISOString(),
+                start: dayjs().add(120, 'm').format(),
             },
         ]
     })
