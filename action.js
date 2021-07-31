@@ -46,7 +46,8 @@ const rewrite_data = (data) => {
         data.message = messageStore
     }
 
-    data.active_devices = getClient()
+    // data.active_devices = getClient()
+    data.active_devices = clientDevices // just for testing if it works
     
     return data;
 }
