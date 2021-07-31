@@ -2,6 +2,7 @@ const axios = require('axios')
 const cache = require('cache')
 const dayjs = require('dayjs')
 const config = require('config')
+const requestIp = require('request-ip')
 
 var utc = require('dayjs/plugin/utc')
 dayjs.extend(utc)
@@ -12,6 +13,13 @@ const cache_memory = new cache( config.get('TTL'))
 let notificationStore = null, messageStore = null;
 let serverRunning = true;
 
+let clienDevices = {}
+
+const pushClient = (deviceIp) => {
+    clienDevices[deviceIp] = true
+}
+
+const getClient = () =>  Object.keys(clienDevices).length
 
 const rewrite_data = (data) => {
 
@@ -37,6 +45,8 @@ const rewrite_data = (data) => {
     if(messageStore){
         data.message = messageStore
     }
+
+    data.active_devices = getClient()
     
     return data;
 }
@@ -44,6 +54,7 @@ const rewrite_data = (data) => {
 
 module.exports.contest = async (req, res) => {
     try{
+        pushClient(requestIp.getClientIp(req))
         if(!serverRunning){
             throw new Error('Server is not up')
         }
