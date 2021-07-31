@@ -34,6 +34,7 @@ const rewrite_data = (data) => {
     delete data.meta.previous
     delete data.meta.next
     delete data.meta.offset
+    data.meta.github = "https://github.com/rahathossain690/CFThisWeek"
 
     data.contests = data.objects
     delete data.objects
