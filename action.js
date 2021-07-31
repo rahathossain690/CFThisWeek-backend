@@ -47,7 +47,7 @@ const rewrite_data = (data) => {
     }
 
     // data.active_devices = getClient()
-    data.active_devices = clientDevices // just for testing if it works
+    data.active_devices = clienDevices // just for testing if it works
     
     return data;
 }
