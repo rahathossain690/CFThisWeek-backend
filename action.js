@@ -13,13 +13,13 @@ const cache_memory = new cache( config.get('TTL'))
 let notificationStore = null, messageStore = null;
 let serverRunning = true;
 
-let clienDevices = {}
+let clientDevices = {}
 
 const pushClient = (deviceIp) => {
-    clienDevices[deviceIp] = true
+    clientDevices[deviceIp] = true
 }
 
-const getClient = () =>  Object.keys(clienDevices).length
+const getClient = () =>  Object.keys(clientDevices).length
 
 const rewrite_data = (data) => {
 
@@ -45,9 +45,7 @@ const rewrite_data = (data) => {
     if(messageStore){
         data.message = messageStore
     }
-
-    // data.active_devices = getClient()
-    data.active_devices = clienDevices // just for testing if it works
+    // data.active_devices = clientDevices // just for testing if it works
     
     return data;
 }
@@ -68,6 +66,7 @@ module.exports.contest = async (req, res) => {
             contest_data = rewrite_data(response.data)
             await cache_memory.put('CONTEST_DATA', contest_data)
         }
+        contest_data.active_devices = getClient()
         res.send(contest_data)
 
     } catch(err){
